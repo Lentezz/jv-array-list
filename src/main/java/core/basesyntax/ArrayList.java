@@ -45,7 +45,8 @@ public class ArrayList<T> implements List<T> {
             Objects.checkIndex(index, size);
             return (T) array[index];
         } catch (IndexOutOfBoundsException e) {
-            throw new ArrayListIndexOutOfBoundsException("Index: " + index + ", Capacity: " + capacity);
+            throw new ArrayListIndexOutOfBoundsException(
+                    "Index: " + index + ", Capacity: " + capacity);
         }
     }
 
@@ -55,7 +56,8 @@ public class ArrayList<T> implements List<T> {
             Objects.checkIndex(index, size);
             array[index] = value;
         } catch (IndexOutOfBoundsException e) {
-            throw new ArrayListIndexOutOfBoundsException("Index: " + index + ", Capacity: " + capacity);
+            throw new ArrayListIndexOutOfBoundsException(
+                    "Index: " + index + ", Capacity: " + capacity);
         }
     }
 
@@ -69,7 +71,8 @@ public class ArrayList<T> implements List<T> {
             size--;
             return value;
         } catch (IndexOutOfBoundsException e) {
-            throw new ArrayListIndexOutOfBoundsException("Index: " + index + ", Capacity: " + capacity);
+            throw new ArrayListIndexOutOfBoundsException(
+                    "Index: " + index + ", Capacity: " + capacity);
         }
     }
 
@@ -109,7 +112,8 @@ public class ArrayList<T> implements List<T> {
 
     private void rangeCheck(int index) {
         if (index > size || index < 0) {
-            throw new ArrayListIndexOutOfBoundsException("Index: " + index + ", size: " + size);
+            throw new ArrayListIndexOutOfBoundsException(
+                    "Index: " + index + ", size: " + size);
         }
     }
 
