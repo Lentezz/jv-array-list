@@ -21,7 +21,7 @@ public class ArrayList<T> implements List<T> {
 
     @Override
     public void add(T value, int index) throws ArrayListIndexOutOfBoundsException {
-        rangeCheck(index);
+        rangeCheckForAddingLast(index);
         if (size == capacity) {
             grow();
         }
@@ -111,18 +111,16 @@ public class ArrayList<T> implements List<T> {
     }
 
     private void rangeCheck(int index) {
-        if (index > size || index < 0) {
+        if (index >= size || index < 0) {
             throw new ArrayListIndexOutOfBoundsException(
                     "Index: " + index + ", size: " + size);
         }
     }
 
-    public static void main(String[] args) {
-        List<Integer> list = new ArrayList<>();
-
-        for (int i = 0; i < 10; i++) {
-            list.add(i, 0);
-            System.out.println(list);
+    private void rangeCheckForAddingLast(int index) {
+        if (index > size || index < 0) {
+            throw new ArrayListIndexOutOfBoundsException(
+                    "Index: " + index + ", size: " + size);
         }
     }
 }
