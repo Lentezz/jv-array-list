@@ -110,13 +110,6 @@ public class ArrayList<T> implements List<T> {
         array = Arrays.copyOf(array, capacity);
     }
 
-    private void rangeCheck(int index) {
-        if (index >= size || index < 0) {
-            throw new ArrayListIndexOutOfBoundsException(
-                    "Index: " + index + ", size: " + size);
-        }
-    }
-
     private void rangeCheckForAddingLast(int index) {
         if (index > size || index < 0) {
             throw new ArrayListIndexOutOfBoundsException(
