@@ -11,34 +11,25 @@ public class ArrayList<T> implements List<T> {
     private Object[] array = new Object[capacity];
 
     @Override
-    public void add(T value) {
-        try {
-            Objects.checkIndex(size, capacity);
-            array[size] = value;
-            size++;
-        } catch (IndexOutOfBoundsException e) {
+    public void add(T value) throws ArrayListIndexOutOfBoundsException {
+        if (size == capacity) {
             grow();
-            add(value);
         }
+        array[size] = value;
+        size++;
     }
 
     @Override
-    public void add(T value, int index) {
-        try {
-            rangeCheck(index);
-            if (size == capacity) {
-                grow();
-            }
-            int numMoved = size - index;
-            System.arraycopy(array, index, array, index + 1, numMoved);
-            array[index] = value;
-            size++;
-        } catch (NegativeArrayIndexException e) {
-            System.out.println("catched");
-            throw new ArrayListIndexOutOfBoundsException("Index: " + index + ", Size: " + size);
-        } catch (IndexOutOfBoundsException e) {
-            throw new ArrayListIndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+    public void add(T value, int index) throws ArrayListIndexOutOfBoundsException {
+        rangeCheck(index);
+        if (size == capacity) {
+            grow();
         }
+
+        int numMoved = size - index;
+        System.arraycopy(array, index, array, index + 1, numMoved);
+        array[index] = value;
+        size++;
     }
 
     @Override
@@ -84,7 +75,7 @@ public class ArrayList<T> implements List<T> {
 
     @Override
     public T remove(T element) {
-        for (int i = 0; i < array.length; i++) {
+        for (int i = 0; i < size; i++) {
             if (Objects.equals(element, array[i])) {
                 return remove(i);
             }
@@ -117,11 +108,17 @@ public class ArrayList<T> implements List<T> {
     }
 
     private void rangeCheck(int index) {
-        if (index < 0) {
-            throw new NegativeArrayIndexException("Index: " + index + ", Capacity: " + capacity);
+        if (index > size || index < 0) {
+            throw new ArrayListIndexOutOfBoundsException("Index: " + index + ", size: " + size);
         }
-        if (index >= capacity) {
-            throw new IndexOutOfBoundsException("Index: " + index + ", Capacity: " + capacity);
+    }
+
+    public static void main(String[] args) {
+        List<Integer> list = new ArrayList<>();
+
+        for (int i = 0; i < 10; i++) {
+            list.add(i, 0);
+            System.out.println(list);
         }
     }
 }
