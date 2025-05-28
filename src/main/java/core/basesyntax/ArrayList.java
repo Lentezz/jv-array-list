@@ -1,48 +1,127 @@
 package core.basesyntax;
 
+import java.util.Arrays;
+import java.util.NoSuchElementException;
+import java.util.Objects;
+
 public class ArrayList<T> implements List<T> {
+
+    private int size = 0;
+    private int capacity = 10;
+    private Object[] array = new Object[capacity];
+
     @Override
     public void add(T value) {
-
+        try {
+            Objects.checkIndex(size, capacity);
+            array[size] = value;
+            size++;
+        } catch (IndexOutOfBoundsException e) {
+            grow();
+            add(value);
+        }
     }
 
     @Override
     public void add(T value, int index) {
-
+        try {
+            rangeCheck(index);
+            if (size == capacity) {
+                grow();
+            }
+            int numMoved = size - index;
+            System.arraycopy(array, index, array, index + 1, numMoved);
+            array[index] = value;
+            size++;
+        } catch (NegativeArrayIndexException e) {
+            System.out.println("catched");
+            throw new ArrayListIndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+        } catch (IndexOutOfBoundsException e) {
+            throw new ArrayListIndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+        }
     }
 
     @Override
     public void addAll(List<T> list) {
-
+        for (int i = 0; i < list.size(); i++) {
+            add(list.get(i));
+        }
     }
 
     @Override
     public T get(int index) {
-        return null;
+        try {
+            Objects.checkIndex(index, size);
+            return (T) array[index];
+        } catch (IndexOutOfBoundsException e) {
+            throw new ArrayListIndexOutOfBoundsException("Index: " + index + ", Capacity: " + capacity);
+        }
     }
 
     @Override
     public void set(T value, int index) {
-
+        try {
+            Objects.checkIndex(index, size);
+            array[index] = value;
+        } catch (IndexOutOfBoundsException e) {
+            throw new ArrayListIndexOutOfBoundsException("Index: " + index + ", Capacity: " + capacity);
+        }
     }
 
     @Override
     public T remove(int index) {
-        return null;
+        try {
+            Objects.checkIndex(index, size);
+            T value = (T) array[index];
+            int numMoved = size - index - 1;
+            System.arraycopy(array, index + 1, array, index, numMoved);
+            size--;
+            return value;
+        } catch (IndexOutOfBoundsException e) {
+            throw new ArrayListIndexOutOfBoundsException("Index: " + index + ", Capacity: " + capacity);
+        }
     }
 
     @Override
     public T remove(T element) {
-        return null;
+        for (int i = 0; i < array.length; i++) {
+            if (Objects.equals(element, array[i])) {
+                return remove(i);
+            }
+        }
+        throw new NoSuchElementException("No such element");
     }
 
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return size == 0;
+    }
+
+    @Override
+    public String toString() {
+        return "ArrayList{"
+                + "size=" + size
+                + ", capacity=" + capacity
+                + ", array=" + Arrays.toString(array)
+                + '}';
+    }
+
+    private void grow() {
+        capacity = (int) (capacity * 1.5);
+        array = Arrays.copyOf(array, capacity);
+    }
+
+    private void rangeCheck(int index) {
+        if (index < 0) {
+            throw new NegativeArrayIndexException("Index: " + index + ", Capacity: " + capacity);
+        }
+        if (index >= capacity) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Capacity: " + capacity);
+        }
     }
 }
